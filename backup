@@ -1,0 +1,49 @@
+if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
+    require("lldebugger").start()
+end
+
+function love.load()
+    Object = require "static.libs.classic"
+    require "player"
+    require "enemy"
+    Test = VisibleHealth()
+
+    Enemy = {}
+    Enemy.x = 200
+    Enemy.y = 200
+    Enemy.speed = 15
+    Enemy.angle = 0
+    Enemy.image = love.graphics.newImage("static/images/arrow_right.png")
+    Enemy.width = Enemy.image:getWidth()
+    Enemy.height = Enemy.image:getHeight()
+end
+
+function love.update(dt)
+    mouse_x, mouse_y = love.mouse.getPosition()
+    Enemy.angle = math.atan2(mouse_y - Enemy.y, mouse_x - Enemy.x)
+    cos = math.cos(Enemy.angle)
+    sin = math.sin(Enemy.angle)
+
+    local distance = getDistance(Enemy.x, Enemy.y, mouse_x, mouse_y)
+    if distance > 35 then
+        Enemy.x = Enemy.x + Enemy.speed * cos * dt
+        Enemy.y = Enemy.y + Enemy.speed * sin * dt
+    end
+end
+
+function love.draw()
+    love.graphics.draw(Enemy.image, Enemy.x, Enemy.y, Enemy.angle, 1, 1, Enemy.width / 2, Enemy.height / 2)
+    love.graphics.circle("fill", mouse_x, mouse_y, 5)
+    Test:draw()
+end
+
+function getDistance(x1, y1, x2, y2)
+    local horizontal_distance = x1 - x2
+    local vertical_distance = y1 - y2
+    local a = horizontal_distance ^ 2
+    local b = vertical_distance ^ 2
+
+    local c = a + b
+    local distance = math.sqrt(c)
+    return distance
+end
