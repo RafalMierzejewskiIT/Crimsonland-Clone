@@ -1,12 +1,13 @@
 Enemy = Moveable:extend()
 
 function Enemy:new(x, y, hp, speed)
-    Moveable.super.new(self, x, y, hp)
+    Enemy.super.new(self, x, y, hp)
     self.image = love.graphics.newImage("static/images/E.png")
     self.width = self.image:getWidth()
     self.height = self.image:getHeight()
     self.speed = speed
-    self.movement_angle = math.atan2(Player:getY() - self.y, Player:getX() - self.x)
+    self.angle = math.atan2(Player:getY() - self.y, Player:getX() - self.x)
+    self.radius = self.image:getWidth() / 2
 end
 
 function Enemy:update(dt)
@@ -16,8 +17,12 @@ function Enemy:update(dt)
     local sin = math.sin(self.angle)
     local distance = GetDistance(self.x, self.y, Player:getX(), Player:getY())
     if distance > 55 then
-        Enemy.x = Enemy.x + Enemy.speed * cos * dt
-        Enemy.y = Enemy.y + Enemy.speed * sin * dt
+        self.x = self.x + self.speed * cos * dt
+        self.y = self.y + self.speed * sin * dt
+    end
+
+    if self.hp <= 0 then
+        self.delete = true
     end
 end
 
