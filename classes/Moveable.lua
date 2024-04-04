@@ -6,7 +6,3 @@ function Moveable:new(x, y, hp, speed, angle)
     self.speed = speed
     self.angle = angle
 end
-
-function Moveable:update(dt)
-    self.x = self.x * self.speed * dt
-end
