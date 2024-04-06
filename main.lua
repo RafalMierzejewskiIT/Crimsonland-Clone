@@ -34,7 +34,8 @@ function love.update(dt)
     Cursor:update()
     if not Paused then
         if love.keyboard.isDown("escape") then
-            love.event.quit(0)
+            Menu = "Start"
+            Paused = true
         end
         if Player.current_hp <= 0 then
             Paused = true

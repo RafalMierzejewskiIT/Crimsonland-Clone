@@ -13,8 +13,6 @@ StartGameButton.width = 300
 StartGameButton.height = 80
 StartGameButton.x = love.graphics:getWidth() / 2 - StartGameButton.width / 2
 StartGameButton.y = starting_height
-StartGameButton.mouseover = false
-StartGameButton.mouseoverSound = false
 function StartGameButton:onClick()
     love.graphics.clear()
     Paused = false
@@ -27,7 +25,6 @@ Options.width = 300
 Options.height = 80
 Options.x = love.graphics:getWidth() / 2 - Options.width / 2
 Options.y = StartGameButton.y + StartGameButton.height + spacing
-Options.mouseover = false
 function Options:onClick()
     Menu = "Options"
 end
@@ -38,7 +35,6 @@ ExitButton.width = 300
 ExitButton.height = 80
 ExitButton.x = love.graphics:getWidth() / 2 - ExitButton.width / 2
 ExitButton.y = Options.y + Options.height + spacing
-ExitButton.mouseover = false
 function ExitButton:onClick()
     love.event.quit(0)
 end
@@ -49,21 +45,18 @@ MasterVolumeText.width = 400
 MasterVolumeText.height = 80
 MasterVolumeText.x = love.graphics:getWidth() / 2 - MasterVolumeText.width / 2
 MasterVolumeText.y = starting_height
-MasterVolumeText.mouseover = false
-MasterVolumeText.mouseoverSound = false
 function MasterVolumeText:onClick()
 end
 
-Slider = newSlider(love.graphics:getWidth() / 2, 800, 300, 50, 0, 100, nil)
+Slider = newSlider(love.graphics:getWidth() / 2, MasterVolumeText.y + MasterVolumeText.height + spacing, 300, 50, 0, 1,
+    function(v) love.audio.setVolume(v) end)
 
 BackButton = {}
 BackButton.text = "Back"
 BackButton.width = 300
 BackButton.height = 80
 BackButton.x = love.graphics:getWidth() / 2 - BackButton.width / 2
-BackButton.y = MasterVolumeText.y + MasterVolumeText.height + spacing
-BackButton.mouseover = false
-BackButton.mouseoverSound = false
+BackButton.y = Slider.y + spacing
 function BackButton:onClick()
     love.graphics.clear()
     Menu = "Start"
@@ -95,7 +88,7 @@ function UpdateMenu()
             button.mouseoverSound = false
         end
     end
-    if Menu == 2 then
+    if Menu == "Options" then
         Slider:update()
     end
 end
