@@ -1,15 +1,21 @@
 Player = Moveable:extend()
 
-function Player:new(x, y, hp, speed, level)
+function Player:new(x, y, hp, speed, damage, level)
     Player.super.new(self, x, y, hp, speed)
     self.image = love.graphics.newImage("static/images/PC.png")
     self.width = self.image:getWidth()
     self.height = self.image:getHeight()
     self.angle = math.atan2(Cursor:getY() - self.y, Cursor:getX() - self.x)
     self.radius = self.image:getWidth()
+    self.rate_of_fire = 0.25
+    self.rate_of_fire_timer = 0
+    self.damage = damage
 end
 
 function Player:update(dt)
+    if self.rate_of_fire_timer > 0 then
+        self.rate_of_fire_timer = self.rate_of_fire_timer - dt
+    end
     self.angle = math.atan2(Cursor:getY() - self.y, Cursor:getX() - self.x)
     Player:movement(dt)
 end
@@ -19,7 +25,7 @@ function Player:draw()
         self.current.hp = 0
     end
 
-    hp_arc = -1.57 + ((self.current_hp / self.max_hp) * 6.29)
+    local hp_arc = -1.57 + ((self.current_hp / self.max_hp) * 6.29)
     love.graphics.setColor(0, 0.8, 1, 0.5)
     love.graphics.circle("fill", self.x, self.y, self.radius / 2 + 5)
     love.graphics.setColor(0, 0.8, 1)
@@ -51,6 +57,18 @@ end
 
 function Player:getHealth()
     return self.current_hp
+end
+
+function Player:getRateOfFireTimer()
+    return self.rate_of_fire_timer
+end
+
+function Player:getDamage()
+    return self.damage
+end
+
+function Player:resetRateOfFireTimer()
+    self.rate_of_fire_timer = self.rate_of_fire
 end
 
 function Player:takeDamage(damage)
