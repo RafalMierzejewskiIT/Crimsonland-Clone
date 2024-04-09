@@ -15,7 +15,6 @@ function love.load()
 
     Object = require "static.libs.classic"
     require "classes.Entity"
-    require "classes.Bullet"
     require "classes.EntityHealth"
     require "classes.Moveable"
     require "classes.Player"
@@ -46,6 +45,14 @@ function love.update(dt)
         end
     end
     if not Paused and Game_Loop then
+        if love.keyboard.isDown("1") then
+            Weapon:changeWeapon(0)
+            -- reloads weapon
+        end
+        if love.keyboard.isDown("2") then
+            Weapon:changeWeapon(1)
+            -- reloads weapon
+        end
         if PlayerCharacter.current_hp <= 0 then
             Menu = "Game Over"
             Game_Loop = false
@@ -57,18 +64,13 @@ function love.update(dt)
         end
         PlayerCharacter:update(dt)
         if love.mouse.isDown(1) then
-            if PlayerCharacter:getRateOfFireTimer() <= 0 then
-                local new_bullet = Bullet(3500)
-                PlayerCharacter:resetRateOfFireTimer()
-                local source = Weapon.sound:clone()
-                love.audio.play(source)
-                table.insert(Bullets, new_bullet)
-            end
+            Weapon:fire()
         end
+        Weapon:update(dt)
         for _, enemy in ipairs(Enemies) do
             for j, bullet in ipairs(Bullets) do
                 if CheckCollision(enemy, bullet) then
-                    enemy.current_hp = enemy.current_hp - PlayerCharacter:getDamage()
+                    enemy.current_hp = enemy.current_hp - bullet.damage
                     table.remove(Bullets, j)
                 end
             end
@@ -94,7 +96,7 @@ end
 
 function love.draw()
     if not Menu or Menu == "Pause" then
-        love.graphics.clear()
+        love.graphics.print("Ammo: " .. Weapon.current_ammo, 10, 50)
         PlayerCharacter:draw()
         for _, v in ipairs(Enemies) do
             v:draw()

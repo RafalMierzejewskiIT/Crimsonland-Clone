@@ -1,6 +1,6 @@
 Bullet = Entity:extend()
 
-function Bullet:new(speed)
+function Bullet:new(speed, damage)
     self.angle = math.atan2(Cursor:getY() - PlayerCharacter:getY(), Cursor:getX() - PlayerCharacter:getX())
     local cos = math.cos(self.angle)
     local sin = math.sin(self.angle)
@@ -9,6 +9,7 @@ function Bullet:new(speed)
     self.image = love.graphics.newImage("static/images/bullet.png")
     self.speed = speed
     self.radius = 2
+    self.damage = damage
 end
 
 function Bullet:update(dt)
