@@ -10,7 +10,7 @@ function love.load()
 
     Paused = true
     Menu = true
-    Game_Over = false
+    Game_Loop = false
     Score = 0
 
     Object = require "static.libs.classic"
@@ -35,7 +35,7 @@ end
 
 function love.update(dt)
     Cursor:update()
-    if not Paused and not Game_Over then
+    if Game_Loop then
         if love.keyboard.isDown("escape") and Escape_Input_Check then
             if Menu == "Pause" then
                 Menu = false
@@ -46,9 +46,11 @@ function love.update(dt)
             end
             Escape_Input_Check = false
         end
+    end
+    if not Paused and Game_Loop then
         if PlayerCharacter.current_hp <= 0 then
             Menu = "Game Over"
-            Game_Over = true
+            Game_Loop = false
         end
         Enemy_spawn_counter = Enemy_spawn_counter + dt
         if Enemy_spawn_counter >= 1 then
@@ -58,7 +60,7 @@ function love.update(dt)
         PlayerCharacter:update(dt)
         if love.mouse.isDown(1) then
             if PlayerCharacter:getRateOfFireTimer() <= 0 then
-                local new_bullet = Bullet(500)
+                local new_bullet = Bullet(3500)
                 PlayerCharacter:resetRateOfFireTimer()
                 local source = PistolSound:clone()
                 love.audio.play(source)

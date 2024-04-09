@@ -16,7 +16,7 @@ StartGameButton.y = starting_height
 function StartGameButton:onClick()
     Paused = false
     Menu = false
-    Game_Over = false
+    Game_Loop = true
     Score = 0
     Enemies = {}
     Bullets = {}
@@ -85,6 +85,7 @@ BackToMenu.x = love.graphics:getWidth() / 2 - BackToMenu.width / 2
 BackToMenu.y = Resume.y + Resume.height + spacing
 function BackToMenu:onClick()
     Menu = "Start"
+    Game_Loop = false
 end
 
 function UpdateMenu()
