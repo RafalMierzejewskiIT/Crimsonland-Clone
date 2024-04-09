@@ -5,19 +5,20 @@ function Enemy:new(x, y, hp, speed, damage)
     self.image = love.graphics.newImage("static/images/E.png")
     self.width = self.image:getWidth()
     self.height = self.image:getHeight()
-    self.angle = math.atan2(Player:getY() - self.y, Player:getX() - self.x)
+    self.angle = math.atan2(PlayerCharacter:getY() - self.y, PlayerCharacter:getX() - self.x)
     self.radius = self.image:getWidth() / 2
     self.damage = damage
     self.rate_of_fire = 1
     self.rate_of_fire_timer = 0
+    self.score = 5
 end
 
 function Enemy:update(dt)
-    self.angle = math.atan2(Player:getY() - self.y, Player:getX() - self.x)
+    self.angle = math.atan2(PlayerCharacter:getY() - self.y, PlayerCharacter:getX() - self.x)
 
     local cos = math.cos(self.angle)
     local sin = math.sin(self.angle)
-    local distance = GetDistance(self.x, self.y, Player:getX(), Player:getY())
+    local distance = GetDistance(self.x, self.y, PlayerCharacter:getX(), PlayerCharacter:getY())
     if self.rate_of_fire_timer > 0 then
         self.rate_of_fire_timer = self.rate_of_fire_timer - dt
     end
@@ -25,7 +26,7 @@ function Enemy:update(dt)
         self.x = self.x + self.speed * cos * dt
         self.y = self.y + self.speed * sin * dt
     elseif self.rate_of_fire_timer <= 0 then
-        Player:takeDamage(self.damage)
+        PlayerCharacter:takeDamage(self.damage)
         self.rate_of_fire_timer = self.rate_of_fire
     end
     if self.current_hp <= 0 then

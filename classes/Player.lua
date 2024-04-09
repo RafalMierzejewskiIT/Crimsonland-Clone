@@ -17,7 +17,7 @@ function Player:update(dt)
         self.rate_of_fire_timer = self.rate_of_fire_timer - dt
     end
     self.angle = math.atan2(Cursor:getY() - self.y, Cursor:getX() - self.x)
-    Player:movement(dt)
+    PlayerCharacter:movement(dt)
 end
 
 function Player:draw()

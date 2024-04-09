@@ -6,8 +6,12 @@ io.stdout:setvbuf("no")
 
 function love.load()
     love.window.setFullscreen(true)
+    love.mouse.setVisible(false)
+
     Paused = true
     Menu = true
+    Game_Over = false
+    Score = 0
 
     Object = require "static.libs.classic"
     require "classes.Entity"
@@ -19,37 +23,43 @@ function love.load()
     require "classes.Cursor"
     require("static.menu")
 
+    PistolSound = love.audio.newSource("static/sfx/glock18.wav", "static")
 
-    love.mouse.setVisible(false)
     Cursor = Cursor(5)
-    Player = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 100, 15)
+    PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 100, 15)
     Enemies = {}
     Bullets = {}
     Enemy_spawn_counter = 0
-
-    PistolSound = love.audio.newSource("static/sfx/glock18.wav", "static")
+    Escape_Input_Check = true
 end
 
 function love.update(dt)
     Cursor:update()
-    if not Paused then
-        if love.keyboard.isDown("escape") then
-            Menu = "Start"
-            Paused = true
+    if not Paused and not Game_Over then
+        if love.keyboard.isDown("escape") and Escape_Input_Check then
+            if Menu == "Pause" then
+                Menu = false
+                Paused = false
+            else
+                Menu = "Pause"
+                Paused = true
+            end
+            Escape_Input_Check = false
         end
-        if Player.current_hp <= 0 then
-            Paused = true
+        if PlayerCharacter.current_hp <= 0 then
+            Menu = "Game Over"
+            Game_Over = true
         end
         Enemy_spawn_counter = Enemy_spawn_counter + dt
         if Enemy_spawn_counter >= 1 then
             Enemy_spawner()
             Enemy_spawn_counter = 0
         end
-        Player:update(dt)
+        PlayerCharacter:update(dt)
         if love.mouse.isDown(1) then
-            if Player:getRateOfFireTimer() <= 0 then
+            if PlayerCharacter:getRateOfFireTimer() <= 0 then
                 local new_bullet = Bullet(500)
-                Player:resetRateOfFireTimer()
+                PlayerCharacter:resetRateOfFireTimer()
                 local source = PistolSound:clone()
                 love.audio.play(source)
                 table.insert(Bullets, new_bullet)
@@ -58,7 +68,7 @@ function love.update(dt)
         for _, enemy in ipairs(Enemies) do
             for j, bullet in ipairs(Bullets) do
                 if CheckCollision(enemy, bullet) then
-                    enemy.current_hp = enemy.current_hp - Player:getDamage()
+                    enemy.current_hp = enemy.current_hp - PlayerCharacter:getDamage()
                     table.remove(Bullets, j)
                 end
             end
@@ -67,6 +77,7 @@ function love.update(dt)
             enemy:update(dt)
             if enemy.delete then
                 table.remove(Enemies, i)
+                Score = Score + enemy.score
             end
         end
         for i, bullet in ipairs(Bullets) do
@@ -82,15 +93,16 @@ function love.update(dt)
 end
 
 function love.draw()
-    if not Paused then
+    if not Menu or Menu == "Pause" then
         love.graphics.clear()
-        Player:draw()
+        PlayerCharacter:draw()
         for _, v in ipairs(Enemies) do
             v:draw()
         end
         for _, v in ipairs(Bullets) do
             v:draw(200)
         end
+        love.graphics.printf("Score: " .. tostring(Score), 18, 0, 400)
     end
     if Menu then
         DrawMenu()
@@ -123,5 +135,11 @@ function Enemy_spawner()
     if (one == 4) then
         local two = love.math.random(love.graphics.getWidth())
         table.insert(Enemies, Enemy(two, love.graphics.getHeight() + radius, 100, 50, 10))
+    end
+end
+
+function love.keyreleased(key)
+    if key == "escape" then
+        Escape_Input_Check = true
     end
 end

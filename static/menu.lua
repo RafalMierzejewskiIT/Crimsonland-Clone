@@ -14,9 +14,14 @@ StartGameButton.height = 80
 StartGameButton.x = love.graphics:getWidth() / 2 - StartGameButton.width / 2
 StartGameButton.y = starting_height
 function StartGameButton:onClick()
-    love.graphics.clear()
     Paused = false
     Menu = false
+    Game_Over = false
+    Score = 0
+    Enemies = {}
+    Bullets = {}
+    Enemy_spawn_counter = 0
+    PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 100, 15)
 end
 
 Options = {}
@@ -58,7 +63,27 @@ BackButton.height = 80
 BackButton.x = love.graphics:getWidth() / 2 - BackButton.width / 2
 BackButton.y = Slider.y + spacing
 function BackButton:onClick()
-    love.graphics.clear()
+    Menu = "Start"
+end
+
+Resume = {}
+Resume.text = "Resume"
+Resume.width = 300
+Resume.height = 80
+Resume.x = love.graphics:getWidth() / 2 - Resume.width / 2
+Resume.y = starting_height
+function Resume:onClick()
+    Paused = false
+    Menu = false
+end
+
+BackToMenu = {}
+BackToMenu.text = "Back to Menu"
+BackToMenu.width = 400
+BackToMenu.height = 80
+BackToMenu.x = love.graphics:getWidth() / 2 - BackToMenu.width / 2
+BackToMenu.y = Resume.y + Resume.height + spacing
+function BackToMenu:onClick()
     Menu = "Start"
 end
 
@@ -68,6 +93,12 @@ function UpdateMenu()
     end
     if Menu == "Options" then
         Buttons = { MasterVolumeText, BackButton }
+    end
+    if Menu == "Pause" then
+        Buttons = { Resume, BackToMenu }
+    end
+    if Menu == "Game Over" then
+        Buttons = { BackToMenu }
     end
     local mx, my = love.mouse.getPosition()
     for _, button in ipairs(Buttons) do
@@ -107,5 +138,9 @@ function DrawMenu()
     end
     if Menu == "Options" then
         Slider:draw()
+    end
+    if Menu == "Game Over" then
+        love.graphics.printf("Score: " .. Score, love.graphics:getWidth() / 2 - 200, starting_height, BackToMenu.width,
+            "center")
     end
 end
