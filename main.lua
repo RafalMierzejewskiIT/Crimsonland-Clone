@@ -23,10 +23,8 @@ function love.load()
     require "classes.Cursor"
     require("static.menu")
 
-    PistolSound = love.audio.newSource("static/sfx/glock18.wav", "static")
-
     Cursor = Cursor(5)
-    PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 100, 15)
+    PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 100)
     Enemies = {}
     Bullets = {}
     Enemy_spawn_counter = 0
@@ -62,7 +60,7 @@ function love.update(dt)
             if PlayerCharacter:getRateOfFireTimer() <= 0 then
                 local new_bullet = Bullet(3500)
                 PlayerCharacter:resetRateOfFireTimer()
-                local source = PistolSound:clone()
+                local source = Weapon.sound:clone()
                 love.audio.play(source)
                 table.insert(Bullets, new_bullet)
             end

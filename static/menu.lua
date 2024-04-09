@@ -21,7 +21,7 @@ function StartGameButton:onClick()
     Enemies = {}
     Bullets = {}
     Enemy_spawn_counter = 0
-    PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 100, 15)
+    PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 100)
 end
 
 Options = {}
