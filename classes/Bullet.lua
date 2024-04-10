@@ -1,7 +1,7 @@
 Bullet = Entity:extend()
 
 function Bullet:new(speed, damage)
-    local recoil = love.math.random(-Weapon.recoil_current, Weapon.recoil_current)
+    local recoil = love.math.random(-SelectedWeapon.recoil_current, SelectedWeapon.recoil_current)
 
     self.angle = math.atan2(Cursor:getY() - PlayerCharacter:getY(), Cursor:getX() - PlayerCharacter:getX()) +
         recoil * 0.01

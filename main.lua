@@ -24,6 +24,7 @@ function love.load()
     require("static.menu")
 
     Cursor = Cursor(5)
+    Weapons:load()
     PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 100)
     Enemies = {}
     Bullets = {}
@@ -48,12 +49,10 @@ function love.update(dt)
     end
     if not Paused and Game_Loop then
         if love.keyboard.isDown("1") then
-            Weapon:changeWeapon(0)
-            -- reloads weapon
+            Weapons:changeWeapon(1)
         end
         if love.keyboard.isDown("2") then
-            Weapon:changeWeapon(1)
-            -- reloads weapon
+            Weapons:changeWeapon(2)
         end
         if PlayerCharacter.current_hp <= 0 then
             Menu = "Game Over"
@@ -66,9 +65,9 @@ function love.update(dt)
         end
         PlayerCharacter:update(dt)
         if love.mouse.isDown(1) then
-            Weapon:fire()
+            Weapons:fire()
         end
-        Weapon:update(dt)
+        Weapons:update(dt)
         for _, enemy in ipairs(Enemies) do
             for j, bullet in ipairs(Bullets) do
                 if CheckCollision(enemy, bullet) then

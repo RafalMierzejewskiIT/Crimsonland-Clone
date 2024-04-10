@@ -24,7 +24,7 @@ end
 function Cursor:update()
     if not Menu then
         local distance = GetDistance(self.x, self.y, PlayerCharacter:getX(), PlayerCharacter:getY())
-        self.radius = self.default_radius + Weapon.recoil_current * distance
+        self.radius = self.default_radius + SelectedWeapon.recoil_current * distance
     end
     self.x = love.mouse.getX()
     self.y = love.mouse.getY()
@@ -39,7 +39,7 @@ function Cursor:draw()
         love.graphics.setColor(0, 1, 1)
         love.graphics.circle("line", self.x, self.y, self.default_radius)
         love.graphics.setFont(font)
-        love.graphics.printf(tostring(Weapon.current_ammo), self.x - 20, self.y - 30, 40, "center")
+        love.graphics.printf(tostring(SelectedWeapon.ammo_current), self.x - 20, self.y - 30, 40, "center")
         love.graphics.setColor(1, 1, 1)
     end
 end

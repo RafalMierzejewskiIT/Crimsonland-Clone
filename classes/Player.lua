@@ -1,5 +1,5 @@
 Player = Moveable:extend()
-require "classes.Weapon"
+require "classes.Weapons"
 
 function Player:new(x, y, hp, speed)
     Player.super.new(self, x, y, hp, speed)
@@ -8,12 +8,12 @@ function Player:new(x, y, hp, speed)
     self.height = self.image:getHeight()
     self.angle = math.atan2(Cursor:getY() - self.y, Cursor:getX() - self.x)
     self.radius = self.image:getWidth()
-    Weapon:changeWeapon(1)
+    Weapons:changeWeapon(1)
 end
 
 function Player:update(dt)
-    if Weapon.rate_of_fire_timer > 0 then
-        Weapon.rate_of_fire_timer = Weapon.rate_of_fire_timer - dt
+    if SelectedWeapon.rate_of_fire_timer > 0 then
+        SelectedWeapon.rate_of_fire_timer = SelectedWeapon.rate_of_fire_timer - dt
     end
     self.angle = math.atan2(Cursor:getY() - self.y, Cursor:getX() - self.x)
     PlayerCharacter:movement(dt)
@@ -48,26 +48,6 @@ function Player:movement(dt)
     if love.keyboard.isDown("d") then
         self.x = self.x + self.speed * dt
     end
-end
-
-function Player:getAngle()
-    return self.angle
-end
-
-function Player:getHealth()
-    return self.current_hp
-end
-
-function Player:getRateOfFireTimer()
-    return Weapon.rate_of_fire_timer
-end
-
-function Player:resetRateOfFireTimer()
-    Weapon.rate_of_fire_timer = Weapon.rate_of_fire
-end
-
-function Player:getDamage()
-    return Weapon.damage
 end
 
 function Player:takeDamage(damage)
