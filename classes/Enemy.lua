@@ -37,14 +37,3 @@ end
 function Enemy:draw()
     love.graphics.draw(self.image, self.x, self.y, self.angle, 1, 1, self.width / 2, self.height / 2)
 end
-
-function GetDistance(x1, y1, x2, y2)
-    local horizontal_distance = x1 - x2
-    local vertical_distance = y1 - y2
-    local a = horizontal_distance ^ 2
-    local b = vertical_distance ^ 2
-
-    local c = a + b
-    local distance = math.sqrt(c)
-    return distance
-end

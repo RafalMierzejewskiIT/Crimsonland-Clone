@@ -4,7 +4,6 @@ local starting_height = 200
 local spacing = 50
 local menu_mouseover_sound = love.audio.newSource("static/sfx/menu_mouseover.wav", "static")
 local font = love.graphics.newFont("static/fonts/Bebas-Regular.ttf", 64)
-love.graphics.setFont(font)
 Menu = "Start"
 
 StartGameButton = {}
@@ -126,6 +125,7 @@ function UpdateMenu()
 end
 
 function DrawMenu()
+    love.graphics.setFont(font)
     for _, button in ipairs(Buttons) do
         love.graphics.rectangle("line", button.x, button.y, button.width, button.height)
         if button.mouseover then

@@ -7,6 +7,7 @@ io.stdout:setvbuf("no")
 function love.load()
     love.window.setFullscreen(true)
     love.mouse.setVisible(false)
+    font = love.graphics.newFont("static/fonts/Bebas-Regular.ttf", 64)
 
     Paused = true
     Menu = true
@@ -31,6 +32,7 @@ function love.load()
 end
 
 function love.update(dt)
+    love.graphics.setFont(font)
     Cursor:update()
     if Game_Loop then
         if love.keyboard.isDown("escape") and Escape_Input_Check then
@@ -96,7 +98,6 @@ end
 
 function love.draw()
     if not Menu or Menu == "Pause" then
-        love.graphics.print("Ammo: " .. Weapon.current_ammo, 10, 50)
         PlayerCharacter:draw()
         for _, v in ipairs(Enemies) do
             v:draw()
@@ -138,6 +139,17 @@ function Enemy_spawner()
         local two = love.math.random(love.graphics.getWidth())
         table.insert(Enemies, Enemy(two, love.graphics.getHeight() + radius, 100, 50, 10))
     end
+end
+
+function GetDistance(x1, y1, x2, y2)
+    local horizontal_distance = x1 - x2
+    local vertical_distance = y1 - y2
+    local a = horizontal_distance ^ 2
+    local b = vertical_distance ^ 2
+
+    local c = a + b
+    local distance = math.sqrt(c)
+    return distance
 end
 
 function love.keyreleased(key)
