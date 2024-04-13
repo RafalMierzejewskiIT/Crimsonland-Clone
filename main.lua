@@ -25,7 +25,6 @@ function love.load()
 
     Cursor = Cursor(5)
     Weapons:load()
-    PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 100)
     Enemies = {}
     Bullets = {}
     Enemy_spawn_counter = 0
@@ -98,11 +97,11 @@ end
 function love.draw()
     if not Menu or Menu == "Pause" then
         PlayerCharacter:draw()
-        for _, v in ipairs(Enemies) do
-            v:draw()
-        end
         for _, v in ipairs(Bullets) do
             v:draw(200)
+        end
+        for _, v in ipairs(Enemies) do
+            v:draw()
         end
         love.graphics.printf("Score: " .. tostring(Score), 18, 0, 400)
     end
@@ -124,19 +123,19 @@ function Enemy_spawner()
     -- temporary, variable monster size in the future
     if (one == 1) then
         local two = love.math.random(love.graphics.getHeight())
-        table.insert(Enemies, Enemy(0 - radius, two, 100, 50, 10))
+        table.insert(Enemies, Enemy(0 - radius, two, 100, 125, 10))
     end
     if (one == 2) then
         local two = love.math.random(love.graphics.getHeight())
-        table.insert(Enemies, Enemy(love.graphics.getWidth() + radius, two, 100, 50, 10))
+        table.insert(Enemies, Enemy(love.graphics.getWidth() + radius, two, 100, 125, 10))
     end
     if (one == 3) then
         local two = love.math.random(love.graphics.getWidth())
-        table.insert(Enemies, Enemy(two, 0 - radius, 100, 50, 10))
+        table.insert(Enemies, Enemy(two, 0 - radius, 100, 125, 10))
     end
     if (one == 4) then
         local two = love.math.random(love.graphics.getWidth())
-        table.insert(Enemies, Enemy(two, love.graphics.getHeight() + radius, 100, 50, 10))
+        table.insert(Enemies, Enemy(two, love.graphics.getHeight() + radius, 100, 125, 10))
     end
 end
 
