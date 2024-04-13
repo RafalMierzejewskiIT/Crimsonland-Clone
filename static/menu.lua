@@ -21,6 +21,9 @@ function StartGameButton:onClick()
     Bullets = {}
     Enemy_spawn_counter = 0
     PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 150)
+    for i, wpn in ipairs(Weapons_Array) do
+        wpn.ammo_current = wpn.ammo_max
+    end
 end
 
 Options = {}

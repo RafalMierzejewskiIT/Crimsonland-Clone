@@ -53,13 +53,9 @@ function love.update(dt)
         if love.keyboard.isDown("2") then
             Weapons:changeWeapon(2)
         end
-        if PlayerCharacter.current_hp <= 0 then
-            Menu = "Game Over"
-            Game_Loop = false
-        end
         Enemy_spawn_counter = Enemy_spawn_counter + dt
         if Enemy_spawn_counter >= 1 then
-            Enemy_spawner()
+            Enemy:spawn()
             Enemy_spawn_counter = 0
         end
         PlayerCharacter:update(dt)
@@ -88,6 +84,10 @@ function love.update(dt)
                 table.remove(Bullets, i)
             end
         end
+        if PlayerCharacter.current_hp <= 0 then
+            Menu = "Game Over"
+            Game_Loop = false
+        end
     end
     if Menu then
         UpdateMenu()
@@ -114,29 +114,6 @@ end
 function CheckCollision(object1, object2)
     local distance = math.sqrt((object1.x - object2.x) ^ 2 + (object1.y - object2.y) ^ 2)
     return distance < object1.radius + object2.radius
-end
-
-function Enemy_spawner()
-    local one = love.math.random(4)
-    -- temporary, variable monster size in the future
-    local radius = 64
-    -- temporary, variable monster size in the future
-    if (one == 1) then
-        local two = love.math.random(love.graphics.getHeight())
-        table.insert(Enemies, Enemy(0 - radius, two, 100, 125, 10))
-    end
-    if (one == 2) then
-        local two = love.math.random(love.graphics.getHeight())
-        table.insert(Enemies, Enemy(love.graphics.getWidth() + radius, two, 100, 125, 10))
-    end
-    if (one == 3) then
-        local two = love.math.random(love.graphics.getWidth())
-        table.insert(Enemies, Enemy(two, 0 - radius, 100, 125, 10))
-    end
-    if (one == 4) then
-        local two = love.math.random(love.graphics.getWidth())
-        table.insert(Enemies, Enemy(two, love.graphics.getHeight() + radius, 100, 125, 10))
-    end
 end
 
 function GetDistance(x1, y1, x2, y2)

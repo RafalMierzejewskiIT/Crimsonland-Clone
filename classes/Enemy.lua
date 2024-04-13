@@ -1,8 +1,8 @@
 Enemy = Moveable:extend()
 
-function Enemy:new(x, y, hp, speed, damage)
+function Enemy:new(x, y, hp, speed, damage, image)
     Enemy.super.new(self, x, y, hp, speed)
-    self.image = love.graphics.newImage("static/images/E.png")
+    self.image = love.graphics.newImage(image)
     self.width = self.image:getWidth()
     self.height = self.image:getHeight()
     self.angle = math.atan2(PlayerCharacter:getY() - self.y, PlayerCharacter:getX() - self.x)
@@ -36,4 +36,55 @@ end
 
 function Enemy:draw()
     love.graphics.draw(self.image, self.x, self.y, self.angle, 1, 1, self.width / 2, self.height / 2)
+end
+
+function Enemy:spawn()
+    local enemyType = love.math.random(10)
+    local enemyHp = 0
+    local enemySpeed = 0
+    local enemyRadius = 0
+    local enemyDamage = 0
+    local enemyImage = ""
+    if enemyType == 1 then
+        enemyHp = 50
+        enemySpeed = 200
+        enemyRadius = 48
+        enemyDamage = 10
+        enemyImage = "static/images/E_small.png"
+    elseif enemyType == 10 then
+        enemyHp = 200
+        enemySpeed = 50
+        enemyRadius = 80
+        enemyDamage = 30
+        enemyImage = "static/images/E_big.png"
+    else
+        enemyHp = 100
+        enemySpeed = 100
+        enemyRadius = 64
+        enemyDamage = 20
+        enemyImage = "static/images/E_normal.png"
+    end
+    local whichBorder = love.math.random(4)
+    -- left border
+    if (whichBorder == 1) then
+        local borderPosition = love.math.random(love.graphics.getHeight())
+        table.insert(Enemies, Enemy(0 - enemyRadius, borderPosition, enemyHp, enemySpeed, enemyDamage, enemyImage))
+    end
+    -- right border
+    if (whichBorder == 2) then
+        local borderPosition = love.math.random(love.graphics.getHeight())
+        table.insert(Enemies,
+            Enemy(love.graphics.getWidth() + enemyRadius, borderPosition, enemyHp, enemySpeed, enemyDamage, enemyImage))
+    end
+    -- top border
+    if (whichBorder == 3) then
+        local borderPosition = love.math.random(love.graphics.getWidth())
+        table.insert(Enemies, Enemy(borderPosition, 0 - enemyRadius, enemyHp, enemySpeed, enemyDamage, enemyImage))
+    end
+    -- bottom border
+    if (whichBorder == 4) then
+        local borderPosition = love.math.random(love.graphics.getWidth())
+        table.insert(Enemies,
+            Enemy(borderPosition, love.graphics.getHeight() + enemyRadius, enemyHp, enemySpeed, enemyDamage, enemyImage))
+    end
 end
