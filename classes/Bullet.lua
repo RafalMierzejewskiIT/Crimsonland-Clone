@@ -13,9 +13,11 @@ function Bullet:new(speed, damage)
     self.speed = speed
     self.radius = 1
     self.damage = damage
+    -- self.trail_max = 32
     -- self.trail_current = 0
-    -- self.trail_max = 3
+    -- self.trail_duration = 0.05
     -- self.trail_timer = 1
+    -- self.trail = {}
 end
 
 function Bullet:update(dt)

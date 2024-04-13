@@ -8,6 +8,7 @@ function Player:new(x, y, hp, speed)
     self.height = self.image:getHeight()
     self.angle = math.atan2(Cursor:getY() - self.y, Cursor:getX() - self.x)
     self.radius = self.image:getWidth()
+    -- radius has bad value currently
     Weapons:changeWeapon(1)
 end
 
@@ -38,16 +39,16 @@ end
 function Player:movement(dt)
     local dx = 0
     local dy = 0
-    if love.keyboard.isDown("w") then
+    if love.keyboard.isDown("w") and PlayerCharacter.y > PlayerCharacter.radius / 2 then
         dy = -1
     end
-    if love.keyboard.isDown("s") then
+    if love.keyboard.isDown("s") and PlayerCharacter.y < love.graphics:getHeight() - PlayerCharacter.radius / 2 then
         dy = 1
     end
-    if love.keyboard.isDown("a") then
+    if love.keyboard.isDown("a") and PlayerCharacter.x > PlayerCharacter.radius / 2 then
         dx = -1
     end
-    if love.keyboard.isDown("d") then
+    if love.keyboard.isDown("d") and PlayerCharacter.x < love.graphics:getWidth() - PlayerCharacter.radius / 2 then
         dx = 1
     end
     if dx ~= 0 or dy ~= 0 then
