@@ -2,6 +2,7 @@ Weapons = Object:extend()
 
 Weapons_Array = {}
 require "classes.Bullet"
+require "classes.BulletTrail"
 
 function Weapons:new(name, rate_of_fire, reload_time, ammo_max,
                      recoil_max, recoil_buildup, recoil_decay,

@@ -27,6 +27,7 @@ function love.load()
     Weapons:load()
     Enemies = {}
     Bullets = {}
+    BulletTrails = {}
     Enemy_spawn_counter = 0
     Escape_Input_Check = true
 end
@@ -84,6 +85,12 @@ function love.update(dt)
                 table.remove(Bullets, i)
             end
         end
+        for i, bulletTrail in ipairs(BulletTrails) do
+            bulletTrail:update(dt)
+            if bulletTrail.delete then
+                table.remove(BulletTrails, i)
+            end
+        end
         if PlayerCharacter.current_hp <= 0 then
             Menu = "Game Over"
             Game_Loop = false
@@ -99,6 +106,9 @@ function love.draw()
         PlayerCharacter:draw()
         for _, v in ipairs(Bullets) do
             v:draw(200)
+        end
+        for _, v in ipairs(BulletTrails) do
+            v:draw()
         end
         for _, v in ipairs(Enemies) do
             v:draw()
