@@ -19,6 +19,7 @@ function StartGameButton:onClick()
     Score = 0
     Enemies = {}
     Bullets = {}
+    BulletTrails = {}
     Enemy_spawn_counter = 0
     PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 150)
     for i, wpn in ipairs(Weapons_Array) do
