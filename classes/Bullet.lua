@@ -15,6 +15,7 @@ function Bullet:new(speed, damage)
     self.speed = speed
     self.radius = 1
     self.damage = damage
+    self.trail_frame = 1
 end
 
 function Bullet:update(dt)
@@ -24,7 +25,7 @@ function Bullet:update(dt)
     self.x = self.x + self.speed * cos * dt
     self.y = self.y + self.speed * sin * dt
 
-    local newBulletTrail = BulletTrail(self.px, self.py, self.x, self.y, 40)
+    local newBulletTrail = BulletTrail(self.px, self.py, self.x, self.y, 30, self.trail_frame)
     table.insert(BulletTrails, newBulletTrail)
 
     self.px = self.x
@@ -33,6 +34,8 @@ function Bullet:update(dt)
     if self.x < 0 or self.x > love.graphics.getWidth() or self.y < 0 or self.y > love.graphics.getHeight() then
         self.delete = true
     end
+
+    self.trail_frame = self.trail_frame + 1
 end
 
 function Bullet:draw()
