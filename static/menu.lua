@@ -3,35 +3,33 @@ require 'static.libs.simple-slider'
 local starting_height = 200
 local spacing = 50
 local menu_mouseover_sound = love.audio.newSource("static/sfx/menu_mouseover.wav", "static")
-local font = love.graphics.newFont("static/fonts/Bebas-Regular.ttf", 64)
 Menu = "Start"
 
 StartGameButton = {}
 StartGameButton.text = "Start Game"
 StartGameButton.width = 300
 StartGameButton.height = 80
-StartGameButton.x = love.graphics:getWidth() / 2 - StartGameButton.width / 2
+StartGameButton.x = love.graphics.getWidth() / 2 - StartGameButton.width / 2
 StartGameButton.y = starting_height
 function StartGameButton:onClick()
-    Paused = false
     Menu = false
     Game_Loop = true
     Score = 0
+
+    GameCursor = Cursor()
+    Weapons:load()
     Enemies = {}
     Bullets = {}
     BulletTrails = {}
-    Enemy_spawn_counter = 0
+
     PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 150)
-    for i, wpn in ipairs(Weapons_Array) do
-        wpn.ammo_current = wpn.ammo_max
-    end
 end
 
 Options = {}
 Options.text = "Options"
 Options.width = 300
 Options.height = 80
-Options.x = love.graphics:getWidth() / 2 - Options.width / 2
+Options.x = love.graphics.getWidth() / 2 - Options.width / 2
 Options.y = StartGameButton.y + StartGameButton.height + spacing
 function Options:onClick()
     Menu = "Options"
@@ -41,7 +39,7 @@ ExitButton = {}
 ExitButton.text = "Exit"
 ExitButton.width = 300
 ExitButton.height = 80
-ExitButton.x = love.graphics:getWidth() / 2 - ExitButton.width / 2
+ExitButton.x = love.graphics.getWidth() / 2 - ExitButton.width / 2
 ExitButton.y = Options.y + Options.height + spacing
 function ExitButton:onClick()
     love.event.quit(0)
@@ -51,19 +49,19 @@ MasterVolumeText = {}
 MasterVolumeText.text = "Master Volume"
 MasterVolumeText.width = 400
 MasterVolumeText.height = 80
-MasterVolumeText.x = love.graphics:getWidth() / 2 - MasterVolumeText.width / 2
+MasterVolumeText.x = love.graphics.getWidth() / 2 - MasterVolumeText.width / 2
 MasterVolumeText.y = starting_height
 function MasterVolumeText:onClick()
 end
 
-Slider = newSlider(love.graphics:getWidth() / 2, MasterVolumeText.y + MasterVolumeText.height + spacing, 300, 50, 0, 1,
+Slider = newSlider(love.graphics.getWidth() / 2, MasterVolumeText.y + MasterVolumeText.height + spacing, 300, 50, 0, 1,
     function(v) love.audio.setVolume(v) end)
 
 BackButton = {}
 BackButton.text = "Back"
 BackButton.width = 300
 BackButton.height = 80
-BackButton.x = love.graphics:getWidth() / 2 - BackButton.width / 2
+BackButton.x = love.graphics.getWidth() / 2 - BackButton.width / 2
 BackButton.y = Slider.y + spacing
 function BackButton:onClick()
     Menu = "Start"
@@ -73,10 +71,9 @@ Resume = {}
 Resume.text = "Resume"
 Resume.width = 300
 Resume.height = 80
-Resume.x = love.graphics:getWidth() / 2 - Resume.width / 2
+Resume.x = love.graphics.getWidth() / 2 - Resume.width / 2
 Resume.y = starting_height
 function Resume:onClick()
-    Paused = false
     Menu = false
 end
 
@@ -84,7 +81,7 @@ BackToMenu = {}
 BackToMenu.text = "Back to Menu"
 BackToMenu.width = 400
 BackToMenu.height = 80
-BackToMenu.x = love.graphics:getWidth() / 2 - BackToMenu.width / 2
+BackToMenu.x = love.graphics.getWidth() / 2 - BackToMenu.width / 2
 BackToMenu.y = Resume.y + Resume.height + spacing
 function BackToMenu:onClick()
     Menu = "Start"
@@ -114,10 +111,10 @@ function UpdateMenu()
                 love.audio.play(source)
                 button.mouseoverSound = true
             end
-            if love.mouse.isDown(1) and not PrevMouseClick then
+            if love.mouse.isDown(1) and not InputCheck then
                 button:onClick()
             end
-            PrevMouseClick = love.mouse.isDown(1)
+            InputCheck = love.mouse.isDown(1)
         else
             button.mouseover = false
             button.mouseoverSound = false
@@ -129,7 +126,6 @@ function UpdateMenu()
 end
 
 function DrawMenu()
-    love.graphics.setFont(font)
     for _, button in ipairs(Buttons) do
         love.graphics.rectangle("line", button.x, button.y, button.width, button.height)
         if button.mouseover then
@@ -145,7 +141,7 @@ function DrawMenu()
         Slider:draw()
     end
     if Menu == "Game Over" then
-        love.graphics.printf("Score: " .. Score, love.graphics:getWidth() / 2 - 200, starting_height, BackToMenu.width,
+        love.graphics.printf("Score: " .. Score, love.graphics.getWidth() / 2 - 200, starting_height, BackToMenu.width,
             "center")
     end
 end

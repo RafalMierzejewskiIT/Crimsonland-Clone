@@ -6,18 +6,24 @@ function Player:new(x, y, hp, speed)
     self.image = love.graphics.newImage("static/images/PC.png")
     self.width = self.image:getWidth()
     self.height = self.image:getHeight()
-    self.angle = math.atan2(Cursor:getY() - self.y, Cursor:getX() - self.x)
-    self.radius = self.image:getWidth()
-    -- radius has bad value currently
+    self.angle = math.atan2(GameCursor.y - self.y, GameCursor.x - self.x)
+    self.radius = self.image:getWidth() / 2
     Weapons:changeWeapon(1)
 end
 
 function Player:update(dt)
-    if SelectedWeapon.rate_of_fire_timer > 0 then
-        SelectedWeapon.rate_of_fire_timer = SelectedWeapon.rate_of_fire_timer - dt
-    end
-    self.angle = math.atan2(Cursor:getY() - self.y, Cursor:getX() - self.x)
+    self.angle = math.atan2(GameCursor.y - self.y, GameCursor.x - self.x)
+
     PlayerCharacter:movement(dt)
+    if love.keyboard.isDown("1") then
+        Weapons:changeWeapon(1)
+    end
+    if love.keyboard.isDown("2") then
+        Weapons:changeWeapon(2)
+    end
+    if love.mouse.isDown(1) then
+        Weapons:fire()
+    end
 end
 
 function Player:draw()
@@ -27,28 +33,28 @@ function Player:draw()
 
     local hp_arc = -1.57 + ((self.current_hp / self.max_hp) * 6.29)
     love.graphics.setColor(0, 0.8, 1, 0.5)
-    love.graphics.circle("fill", self.x, self.y, self.radius / 2 + 5)
+    love.graphics.circle("fill", self.x, self.y, self.radius * 2 + 5)
     love.graphics.setColor(0, 0.8, 1)
-    love.graphics.arc("fill", self.x, self.y, self.radius / 2 + 5, -1.57, hp_arc)
+    love.graphics.arc("fill", self.x, self.y, self.radius * 2 + 5, -1.57, hp_arc)
     love.graphics.setColor(0, 0, 0)
-    love.graphics.circle("fill", self.x, self.y, self.radius / 2 - 1)
+    love.graphics.circle("fill", self.x, self.y, self.radius * 2 - 1)
     love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(self.image, self.x, self.y, self.angle, 0.5, 0.5, self.width / 2, self.height / 2)
+    love.graphics.draw(self.image, self.x, self.y, self.angle, 1, 1, self.width / 2, self.height / 2)
 end
 
 function Player:movement(dt)
     local dx = 0
     local dy = 0
-    if love.keyboard.isDown("w") and PlayerCharacter.y > PlayerCharacter.radius / 2 then
+    if love.keyboard.isDown("w") and PlayerCharacter.y > PlayerCharacter.radius then
         dy = -1
     end
-    if love.keyboard.isDown("s") and PlayerCharacter.y < love.graphics:getHeight() - PlayerCharacter.radius / 2 then
+    if love.keyboard.isDown("s") and PlayerCharacter.y < love.graphics.getHeight() - PlayerCharacter.radius then
         dy = 1
     end
-    if love.keyboard.isDown("a") and PlayerCharacter.x > PlayerCharacter.radius / 2 then
+    if love.keyboard.isDown("a") and PlayerCharacter.x > PlayerCharacter.radius then
         dx = -1
     end
-    if love.keyboard.isDown("d") and PlayerCharacter.x < love.graphics:getWidth() - PlayerCharacter.radius / 2 then
+    if love.keyboard.isDown("d") and PlayerCharacter.x < love.graphics.getWidth() - PlayerCharacter.radius then
         dx = 1
     end
     if dx ~= 0 or dy ~= 0 then
@@ -59,8 +65,4 @@ function Player:movement(dt)
         self.x = self.x + dx * self.speed * dt
         self.y = self.y + dy * self.speed * dt
     end
-end
-
-function Player:takeDamage(damage)
-    self.current_hp = self.current_hp - damage
 end
