@@ -7,11 +7,11 @@ io.stdout:setvbuf("no")
 function love.load()
     love.window.setFullscreen(true)
     love.mouse.setVisible(false)
-    font = love.graphics.newFont("static/fonts/Bebas-Regular.ttf", 64)
+    MainFont = love.graphics.newFont("static/fonts/Bebas-Regular.ttf", 64)
+    love.graphics.setFont(MainFont)
 
-    Paused = true
-    Menu = true
     Game_Loop = false
+    Menu = true
     Score = 0
 
     Object = require "static.libs.classic"
@@ -21,73 +21,52 @@ function love.load()
     require "classes.Player"
     require "classes.Enemy"
     require "classes.Cursor"
-    require("static.menu")
+    require "static.menu"
 
-    Cursor = Cursor(5)
+    GameCursor = Cursor()
     Weapons:load()
-    Enemies = {}
-    Bullets = {}
-    BulletTrails = {}
-    Enemy_spawn_counter = 0
-    Escape_Input_Check = true
 end
 
 function love.update(dt)
-    love.graphics.setFont(font)
-    Cursor:update()
+    GameCursor:update()
     if Game_Loop then
-        if love.keyboard.isDown("escape") and Escape_Input_Check then
+        if love.keyboard.isDown("escape") and not Input_check then
             if Menu == "Pause" then
                 Menu = false
-                Paused = false
             else
                 Menu = "Pause"
-                Paused = true
             end
-            Escape_Input_Check = false
         end
+        Input_check = love.keyboard.isDown("escape")
     end
-    if not Paused and Game_Loop then
-        if love.keyboard.isDown("1") then
-            Weapons:changeWeapon(1)
-        end
-        if love.keyboard.isDown("2") then
-            Weapons:changeWeapon(2)
-        end
-        Enemy_spawn_counter = Enemy_spawn_counter + dt
-        if Enemy_spawn_counter >= 1 then
-            Enemy:spawn()
-            Enemy_spawn_counter = 0
-        end
+    if Menu ~= "Pause" and Game_Loop then
         PlayerCharacter:update(dt)
-        if love.mouse.isDown(1) then
-            Weapons:fire()
-        end
         Weapons:update(dt)
+        Enemy:spawnUpdate(dt)
         for _, enemy in ipairs(Enemies) do
-            for j, bullet in ipairs(Bullets) do
-                if CheckCollision(enemy, bullet) then
-                    enemy.current_hp = enemy.current_hp - bullet.damage
+            for j = #Bullets, 1, -1 do
+                if CheckCollision(enemy, Bullets[j]) then
+                    enemy.current_hp = enemy.current_hp - Bullets[j].damage
                     table.remove(Bullets, j)
                 end
             end
         end
-        for i, enemy in ipairs(Enemies) do
-            enemy:update(dt)
-            if enemy.delete then
+        for i = #Enemies, 1, -1 do
+            Enemies[i]:update(dt)
+            if Enemies[i].delete then
                 table.remove(Enemies, i)
-                Score = Score + enemy.score
+                Score = Score + Enemies[i].score
             end
         end
-        for i, bullet in ipairs(Bullets) do
-            bullet:update(dt)
-            if bullet.delete then
+        for i = #Bullets, 1, -1 do
+            Bullets[i]:update(dt)
+            if Bullets[i].delete then
                 table.remove(Bullets, i)
             end
         end
-        for i, bulletTrail in ipairs(BulletTrails) do
-            bulletTrail:update(dt)
-            if bulletTrail.delete then
+        for i = #BulletTrails, 1, -1 do
+            BulletTrails[i]:update(dt)
+            if BulletTrails[i].delete then
                 table.remove(BulletTrails, i)
             end
         end
@@ -102,12 +81,12 @@ function love.update(dt)
 end
 
 function love.draw()
-    if not Menu or Menu == "Pause" then
+    if Game_Loop then
         PlayerCharacter:draw()
-        for _, v in ipairs(Bullets) do
-            v:draw(200)
-        end
         for _, v in ipairs(BulletTrails) do
+            v:draw()
+        end
+        for _, v in ipairs(Bullets) do
             v:draw()
         end
         for _, v in ipairs(Enemies) do
@@ -118,27 +97,19 @@ function love.draw()
     if Menu then
         DrawMenu()
     end
-    Cursor:draw()
+    GameCursor:draw()
 end
 
 function CheckCollision(object1, object2)
-    local distance = math.sqrt((object1.x - object2.x) ^ 2 + (object1.y - object2.y) ^ 2)
+    local distance = GetDistance(object1.x, object1.y, object2.x, object2.y)
     return distance < object1.radius + object2.radius
 end
 
 function GetDistance(x1, y1, x2, y2)
-    local horizontal_distance = x1 - x2
-    local vertical_distance = y1 - y2
-    local a = horizontal_distance ^ 2
-    local b = vertical_distance ^ 2
+    local a = (x1 - x2) ^ 2
+    local b = (y1 - y2) ^ 2
 
     local c = a + b
     local distance = math.sqrt(c)
     return distance
-end
-
-function love.keyreleased(key)
-    if key == "escape" then
-        Escape_Input_Check = true
-    end
 end

@@ -1,4 +1,5 @@
 BulletTrail = Object:extend()
+BulletTrails = {}
 
 function BulletTrail:new(px, py, x, y, max, frame)
     self.trail_max = max
@@ -12,8 +13,8 @@ function BulletTrail:new(px, py, x, y, max, frame)
 end
 
 function BulletTrail:update()
-    if self.trail_frame > 0 and self.trail_frame < (self.trail_max / 3) then
-        self.trail_max = self.trail_max / 2 + self.trail_frame
+    if self.trail_frame > 0 and self.trail_frame < 10 then
+        self.trail_max = self.trail_frame * 3
     end
     if (self.trail_current < self.trail_max) then
         self.trail_current = self.trail_current + 1
@@ -23,8 +24,7 @@ function BulletTrail:update()
 end
 
 function BulletTrail:draw()
-    local color = 0.7 - (self.trail_current / self.trail_max) * 0.7
-
+    local color = 0.7 - ((self.trail_current - 1) / self.trail_max) * 0.7
     love.graphics.setColor(color, color, color)
     love.graphics.line(self.px, self.py, self.x, self.y)
     love.graphics.setColor(1, 1, 1)

@@ -28,12 +28,13 @@ function Weapons:new(name, rate_of_fire, reload_time, ammo_max,
 end
 
 function Weapons:load()
+    Weapons_Array = {}
     Weapon_instance = Weapons("Pistol", 0.3, 0.75, 12, 5, 5, 0.25, 30, 3500,
         love.audio.newSource("static/sfx/glock18.wav", "static"),
         love.audio.newSource("static/sfx/reload_start.wav", "static"),
         love.audio.newSource("static/sfx/reload_end.wav", "static"))
     table.insert(Weapons_Array, Weapon_instance)
-    Weapon_instance = Weapons("MP5", 0.05, 0.75, 30, 5, 1, 0.15, 10, 3500,
+    Weapon_instance = Weapons("SMG", 0.05, 0.75, 30, 5, 1, 0.15, 10, 3500,
         love.audio.newSource("static/sfx/mp5.wav", "static"),
         love.audio.newSource("static/sfx/reload_start.wav", "static"),
         love.audio.newSource("static/sfx/reload_end.wav", "static"))
@@ -44,6 +45,9 @@ end
 function Weapons:update(dt)
     if SelectedWeapon.ammo_current == 0 then
         SelectedWeapon:reload(dt)
+    end
+    if SelectedWeapon.rate_of_fire_timer > 0 then
+        SelectedWeapon.rate_of_fire_timer = SelectedWeapon.rate_of_fire_timer - dt
     end
     for _, wpn in ipairs(Weapons_Array) do
         if wpn.recoil_current > 0 then

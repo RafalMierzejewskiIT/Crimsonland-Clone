@@ -9,11 +9,3 @@ end
 function Entity:draw()
     love.graphics.draw(self.image, self.x, self.y)
 end
-
-function Entity:getX()
-    return self.x
-end
-
-function Entity:getY()
-    return self.y
-end

@@ -1,14 +1,15 @@
 Bullet = Entity:extend()
+Bullets = {}
 
 function Bullet:new(speed, damage)
     local recoil = love.math.random(-SelectedWeapon.recoil_current, SelectedWeapon.recoil_current)
 
-    self.angle = math.atan2(Cursor:getY() - PlayerCharacter:getY(), Cursor:getX() - PlayerCharacter:getX()) +
+    self.angle = math.atan2(GameCursor.y - PlayerCharacter.y, GameCursor.x - PlayerCharacter.x) +
         recoil * 0.01
     local cos = math.cos(self.angle)
     local sin = math.sin(self.angle)
-    self.x = PlayerCharacter:getX() + 20 * cos
-    self.y = PlayerCharacter:getY() + 20 * sin
+    self.x = PlayerCharacter.x + PlayerCharacter.radius * cos
+    self.y = PlayerCharacter.y + PlayerCharacter.radius * sin
     self.px = self.x
     self.py = self.y
     self.image = love.graphics.newImage("static/images/bullet.png")
