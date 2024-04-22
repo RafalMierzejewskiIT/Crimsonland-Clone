@@ -50,8 +50,8 @@ Upon clicking Start Game the Player Character is generated in the center of the 
 
 Some things that exist in most classes: <br/>
 
-There's tons of timers related to something in my classes, for example rate_of_fire and rate_of_fire timer, the way they're being handled is I initialise them to their minimal or maximal possible value depending on the situation, and on every update its being checked if they're below 0. <br/>
-if that's true, something happens and timer value is changed to their related property, in this case rate_of fire. So check rate_of_fire_timer < 0, then do stuff, and then rate_of_fire_timer = rate_of_fire. <br/>
+There's tons of timers related to something in my classes, for example `rate_of_fire` and `rate_of_fire timer`, the way they're being handled is I initialise them to their minimal or maximal possible value depending on the situation, and on every update its being checked if they're below 0. <br/>
+if that's true, something happens and timer value is changed to their related property, in this case `rate_of fire`. So check `rate_of_fire_timer < 0`, then do stuff, and then `rate_of_fire_timer = rate_of_fire`. <br/>
 
 When I need to remove something from memory or the screen I change this objects property delete to true. <br/>
 In the main loop when I run update on every instance of an enemy, I check if their property delete is true, and remove them if that's true. <br/>
