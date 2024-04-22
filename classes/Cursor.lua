@@ -15,6 +15,9 @@ function Cursor:update()
     if not Menu then
         local distance = GetDistance(self.x, self.y, PlayerCharacter.x, PlayerCharacter.y)
         self.radius = SelectedWeapon.recoil_current * (distance / 100)
+        if self.radius < self.default_radius then
+            self.radius = self.default_radius
+        end
     end
 end
 

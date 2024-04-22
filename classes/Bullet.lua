@@ -3,7 +3,6 @@ Bullets = {}
 
 function Bullet:new(speed, damage)
     local recoil = love.math.random(-SelectedWeapon.recoil_current, SelectedWeapon.recoil_current)
-
     self.angle = math.atan2(GameCursor.y - PlayerCharacter.y, GameCursor.x - PlayerCharacter.x) +
         recoil * 0.01
     local cos = math.cos(self.angle)
@@ -16,17 +15,20 @@ function Bullet:new(speed, damage)
     self.speed = speed
     self.radius = 1
     self.damage = damage
-    self.trail_frame = 1
+    self.trail_time = 0
+    self.delete = false
 end
 
 function Bullet:update(dt)
+    self.trail_time = self.trail_time + dt
+
     local cos = math.cos(self.angle)
     local sin = math.sin(self.angle)
 
     self.x = self.x + self.speed * cos * dt
     self.y = self.y + self.speed * sin * dt
 
-    local newBulletTrail = BulletTrail(self.px, self.py, self.x, self.y, 30, self.trail_frame)
+    local newBulletTrail = BulletTrail(self.px, self.py, self.x, self.y, self.trail_time)
     table.insert(BulletTrails, newBulletTrail)
 
     self.px = self.x
@@ -34,9 +36,8 @@ function Bullet:update(dt)
 
     if self.x < 0 or self.x > love.graphics.getWidth() or self.y < 0 or self.y > love.graphics.getHeight() then
         self.delete = true
+        return
     end
-
-    self.trail_frame = self.trail_frame + 1
 end
 
 function Bullet:draw()

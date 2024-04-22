@@ -29,12 +29,12 @@ end
 
 function Weapons:load()
     Weapons_Array = {}
-    Weapon_instance = Weapons("Pistol", 0.3, 0.75, 12, 5, 5, 0.25, 30, 3500,
+    Weapon_instance = Weapons("Pistol", 0.3, 0.75, 12, 5, 5, 25, 30, 4500,
         love.audio.newSource("static/sfx/glock18.wav", "static"),
         love.audio.newSource("static/sfx/reload_start.wav", "static"),
         love.audio.newSource("static/sfx/reload_end.wav", "static"))
     table.insert(Weapons_Array, Weapon_instance)
-    Weapon_instance = Weapons("SMG", 0.05, 0.75, 30, 5, 1, 0.15, 10, 3500,
+    Weapon_instance = Weapons("SMG", 0.05, 0.75, 30, 5, 1, 15, 10, 4500,
         love.audio.newSource("static/sfx/mp5.wav", "static"),
         love.audio.newSource("static/sfx/reload_start.wav", "static"),
         love.audio.newSource("static/sfx/reload_end.wav", "static"))
@@ -51,7 +51,7 @@ function Weapons:update(dt)
     end
     for _, wpn in ipairs(Weapons_Array) do
         if wpn.recoil_current > 0 then
-            wpn.recoil_current = wpn.recoil_current - wpn.recoil_decay
+            wpn.recoil_current = wpn.recoil_current - (wpn.recoil_decay * dt)
         end
         if wpn.recoil_current < 0 then
             wpn.recoil_current = 0
