@@ -17,11 +17,16 @@ function Enemy:new(x, y, hp, speed, damage, rate_of_fire, image)
 end
 
 function Enemy:update(dt)
-    self.angle = math.atan2(PlayerCharacter.y - self.y, PlayerCharacter.x - self.x)
+    if self.current_hp <= 0 then
+        self.delete = true
+        return
+    end
 
+    self.angle = math.atan2(PlayerCharacter.y - self.y, PlayerCharacter.x - self.x)
     local cos = math.cos(self.angle)
     local sin = math.sin(self.angle)
     local distance = GetDistance(self.x, self.y, PlayerCharacter.x, PlayerCharacter.y)
+
     if self.rate_of_fire_timer > 0 then
         self.rate_of_fire_timer = self.rate_of_fire_timer - dt
     end
@@ -31,9 +36,6 @@ function Enemy:update(dt)
     elseif self.rate_of_fire_timer <= 0 then
         PlayerCharacter.current_hp = PlayerCharacter.current_hp - self.damage
         self.rate_of_fire_timer = self.rate_of_fire
-    end
-    if self.current_hp <= 0 then
-        self.delete = true
     end
 end
 

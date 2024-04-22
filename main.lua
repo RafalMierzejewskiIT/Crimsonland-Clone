@@ -54,8 +54,8 @@ function love.update(dt)
         for i = #Enemies, 1, -1 do
             Enemies[i]:update(dt)
             if Enemies[i].delete then
-                table.remove(Enemies, i)
                 Score = Score + Enemies[i].score
+                table.remove(Enemies, i)
             end
         end
         for i = #Bullets, 1, -1 do
