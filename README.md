@@ -66,7 +66,7 @@ So when I need to receive input only once, I add a check 'if not InputCheck to "
 ### Player
 
 Player is able to move in 8 directions, after some time I realised that player moves faster diagonally. <br/>
-I solved this using pythagorean theorem, since a and b are 1, hypotenuse will be $\sqrt{2}, so when dx and dy aren't 0, the movement speed of both axes is being multiplied by half of $\sqrt{2} which I round down to 0.7071. <br/>
+I solved this using pythagorean theorem, since a and b are 1, hypotenuse will be \(\sqrt{2}\), so when dx and dy aren't 0, the movement speed of both axes is being multiplied by half of \(\sqrt{2}\) which I round down to 0.7071. <br/>
 Now Player moves diagonally with a speed of \( \frac{\sqrt{2}}{2} \) on both axes, normalising the vector to 1. <br/>
 Making this my first real use of pythagorean theorem in real life. <br/>
 
@@ -90,8 +90,8 @@ It is being calculated by using atan2 function again for relative angle this tim
 Multiplying them in the movement formula: <br/>
 
 ```lua
-self.x = self.x + self.speed \* cos \* dt <br/>
-self.y = self.y + self.speed \* sin \* dt <br/>
+self.x = self.x + self.speed * cos * dt <br/>
+self.y = self.y + self.speed * sin * dt <br/>
 ```
 
 Making this my first real use of trigonometry in real life. <br/>
