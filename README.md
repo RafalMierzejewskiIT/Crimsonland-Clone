@@ -18,10 +18,10 @@ Escape = Pause/Unpause
 
 This is my project for CS50's Final Project.
 
-Following the instructions of Guy White from one of the seminars in CS50, at first I tried to reduce the game down to its Minimal Viable Product, I determined that for this game it would be
-Player character that moves in 8 direction
-Player character should be able to shoot a bullet in the direction of the cursor
-One enemy that moves towards the player character.
+Following the instructions of Guy White from one of the seminars in CS50, at first I tried to reduce the game down to its Minimal Viable Product, I determined that for this game it would be <br/>
+Player character that moves in 8 direction <br/>
+Player character should be able to shoot a bullet in the direction of the cursor <br/>
+One enemy that moves towards the player character. <br/>
 
 This approach was a curse and a blessing, a blessing because it gave me a working prototype very early on, and a curse because due to underlying architecture which worked only for one of everything needed some serious changing in order to expand on it.
 
@@ -126,15 +126,16 @@ Formula for color was tricky to do
 color = ((duration - current) / dt / (time / dt)) \* max_brightness
 The formula can be dense, so here's a step-by-step example:
 
-First update:
+#First update:
 The effect of this formula is that the first bullet trail instance will have color of 1/1 of max_brightness.
-Second update:
+#Second update:
 First bullet trail instance dies, or it would if it weren't for the offset which we will ignore in this explanation.
 Second bullet trail instance is being created with 2/2 of max_brightness., so 0.7 by default.
-Third update:
+#Third update:
 Second bullet trail will have color of 1/2 of max_brightness.
 Third bullet trail instance is being created with 3/3 of max_brightness.
-Fourth update:
+#Fourth update:
+
 Second bullet trail instance dies.
 Third bullet trail will have color of 1/3 of max_brightness.
 Fourth bullet trail instance is being created with 4/4 of max_brightness.
