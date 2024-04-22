@@ -6,14 +6,15 @@ function BulletTrail:new(px, py, x, y, time)
     self.py = py
     self.x = x
     self.y = y
-    self.duration = 1
     self.time = time
-    self.current = 0
-    self.offset = 0.015
 
+    self.duration = 1
+    self.max_brightness = 0.7
+    self.offset = 0.015
     self.color = 0
-    self.currentSetter = false
     self.delete = false
+
+    self.current = self.duration - self.time - self.offset
 end
 
 function BulletTrail:update(dt)
@@ -23,15 +24,10 @@ function BulletTrail:update(dt)
         return
     end
 
-    if not self.currentSetter then
-        self.current = self.duration - self.time - self.offset
-        self.currentSetter = true
-    end
-
-    self.color = (((self.duration - self.current) / dt) / (self.time / dt)) * 0.7
+    self.color = (((self.duration - self.current) / dt) / (self.time / dt)) * self.max_brightness
     if self.offset > 0 then
         self.offset = self.offset - dt
-        self.color = 0.7
+        self.color = self.max_brightness
     end
 end
 
