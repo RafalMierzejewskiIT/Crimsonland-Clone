@@ -47,30 +47,63 @@ Inside Options you're able to change the volume with a slider made using simple-
 ## Explaining the code
 
 Upon clicking Start Game the Player Character is generated in the center of the screen made by taking half of the width and height of your current monitors resolution. <br/>
+`dt` refers to delta time. <br/>
 
 Some things that exist in most classes: <br/>
 
-There's tons of timers related to something in my classes, for example `rate_of_fire` and `rate_of_fire timer`, the way they're being handled is I initialise them to their minimal or maximal possible value depending on the situation, and on every update its being checked if they're below 0. <br/>
-if that's true, something happens and timer value is changed to their related property, in this case `rate_of fire`. So check `rate_of_fire_timer < 0`, then do stuff, and then `rate_of_fire_timer = rate_of_fire`. <br/>
+There's tons of timers related to something in my classes, for example `rate_of_fire` and `rate_of_fire_timer`, the way they're being handled is I initialise them to their minimal or maximal possible value depending on the situation, and on every update its being checked if they're bigger than `0`. <br/>
+if that's true, I subtract `dt`, otherwise something happens and I reset the timer.
 
-When I need to remove something from memory or the screen I change this objects property delete to true. <br/>
-In the main loop when I run update on every instance of an enemy, I check if their property delete is true, and remove them if that's true. <br/>
+```lua
+if self.rate_of_fire_timer > 0 then
+    self.rate_of_fire_timer = self.rate_of_fire_timer - dt
+else
+    {...}
+    self.rate_of_fire_timer = self.rate_of_fire
+end
+```
+
+When I need to remove something from memory or the screen I change this objects property `self.delete = true`. <br/>
+In the main loop when I run update on every instance of an enemy, I check `if property.delete`, and remove them if that's `true`. <br/>
+
+```lua
+for i = #Enemies, 1, -1 do
+    Enemies[i]:update(dt)
+    if Enemies[i].delete then
+        Score = Score + Enemies[i].score
+        table.remove(Enemies, i)
+    end
+end
+```
+
+All of the deletions are run in reverse order to make sure they don't skip anything due to the way arrays indexing works. </br>
+If I were to check let's say index `5`, delete it, now index `5` contains another instance which might also have delete property set to true, but I skip it since now I change my index to `6`. </br>
+This is no longer an issue if we do it in reverse order. <br/>
+
 This is inefficient, but it's sufficient for my needs, and this is solution given by seminars reference sheepolution tutorial. <br/>
-I tried to fix it to reduce the lines of code but the problem lies with table.insert not returning index in lua, I would need to keep track of the indices myself. <br/>
-I'm not saying this is unsolvable but messy and possibly even more complicated than it seems depending on how arrays are implemented in lua. <br/>
+I tried to fix it to reduce the lines of code but the problem lies with `table.insert` not returning index in lua, I would need to keep track of the indices myself. <br/>
+I'm not saying this is unsolvable but messy and possibly even more complicated than it seems depending on how arrays are implemented in lua.<br/>
 
 When the user presses any key on the keyboard, it sends that input on every frame update which is usually 500 times a second. <br/>
 Whenever I wanted to make a pause if player pressed escape it just switched on and off like crazy. <br/>
-So when I need to receive input only once, I add a check 'if not InputCheck to "if love.[].isDown", do something in that block of code in case user pressed button I want AND InputCheck is false, after that I change InputCheck to love.[keyboard or mouse].isDown, now for every keypress I only get the input once. <br/>
+So when I need to receive input only once, I add a check `if not Input_check` to `if love.[].isDown`. <br/>
+After that I change `Input_check = love.[].isDown`, now for every keypress I only get the input once. Like this: <br/>
+
+```lua
+if love.keyboard.isDown("escape") and not Input_check then
+    {...}
+end
+Input_check = love.keyboard.isDown("escape")
+```
 
 ### Player
 
 Player is able to move in 8 directions, after some time I realised that player moves faster diagonally. <br/>
-I solved this using pythagorean theorem, since a and b are 1, hypotenuse will be $`\sqrt{2}`$, so when dx and dy aren't 0, the movement speed of both axes is being multiplied by half of $`\sqrt{2}`$ which I round down to 0.7071. <br/>
-Now Player moves diagonally with a speed of $`\frac{\sqrt{2}}{2}`$ on both axes, normalising the vector to 1. <br/>
+I solved this using pythagorean theorem, since `a` and `b` are 1, hypotenuse will be $`\sqrt{2}`$, so when `dx` and `dy` aren't `0`, the movement speed of both axes is being multiplied by half of $`\sqrt{2}`$ which I round down to `0.7071`. <br/>
+Now Player moves diagonally with a speed of $`\frac{\sqrt{2}}{2}`$ on both axes, normalising the vector to `1`. <br/>
 Making this my first real use of pythagorean theorem in real life. <br/>
 
-Around the player is a blue circle which indicates HP. It's an arc which takes values in radians so its calculated by dividing the current health by max health, taking that and multiplying by 2π, then subtracting $`\frac{π}{2}`$ to make it face the correct way which starts at right by default. <br/>
+Around the player is a blue circle which indicates HP. It's an arc which takes values in radians so its calculated by dividing the current health by max health, taking that and multiplying by `2π`, then subtracting $`\frac{π}{2}`$ to make it face the correct way which starts at right by default. <br/>
 
 Player faces the cursor using the atan2 function which gives me relative angle between cursor and the player, the returned value is in radians, so I draw the player using this angle as its rotation parameter. <br/>
 
@@ -113,11 +146,11 @@ Bullets are being deleted if they go off the screen or they collide with an enem
 
 On every bullet update an instance of BulletTrail class is being created, passing previous x, previous y, x, y, and trail_time. <br/>
 Using this information I draw a line between previous xy and current xy. trail_time is being used to calculate how long the trail should exist. <br/>
-The bullet increases trail_time by delta time with every update. trail_time is being passed to create a new instance of bullet trail for as long as the bullet exists. <br/>
+The bullet increases trail_time by `dt` with every update. trail_time is being passed to create a new instance of bullet trail for as long as the bullet exists. <br/>
 
 BulletTrail has several distinct properties. <br/>
 current = amount of time that has passed since creation of that BulletTrail instance. <br/>
-This increases by delta time on every update. <br/>
+This increases by `dt` on every update. <br/>
 
 time = how much time since creation of the bullet has passed. <br/>
 duration = multiplier for how long should the trail last. <br/>
@@ -144,7 +177,7 @@ Third bullet trail will have color of 1/3 of max_brightness. <br/>
 Fourth bullet trail instance is being created with 4/4 of max_brightness. <br/>
 
 Each bullet trail has a certain lifespan, which is determined by how much time has passed since creation of the bullet instance which spawned it. <br/>
-Every next instance of bullet trail will have longer lifespan by one delta time more than the previous instance, making the trail longer the further away it is from the original xy of the bullet. <br/>
+Every next instance of bullet trail will have longer lifespan by one `dt` more than the previous instance, making the trail longer the further away it is from the original xy of the bullet. <br/>
 Additionally, an offset is applied to extend the lifespan of each bullet trail, adding a bit of time for how long each bullet trail exists, and during that time, their color is max_brightness. Without it first bullet trails would be too short and dark. <br/>
 
 Without all that, trails that originate from Player character that have a flat duration will just leave sharp edge where Player shot from. <br/>
@@ -169,8 +202,6 @@ I aimed to keep the main function as slim as possible. <br/>
 In update function, there are only a few things, Pause logic, checking collision and running update on all instances of all classes and check if they should be deleted by checking their delete property. <br/>
 Checking collision is done by checking if the distance between objects(which is calculated using pythagorean theorem) is smaller than the sum of both objects radii. <br/>
 
-All of the deletions are run in reverse order to make sure they don't skip anything due to the way arrays indexing works. If I were to check let's say index 5, delete it, now index 5 contains another instance which might also have delete property set to true, but I skip it since now I change my index to 6. This is no longer an issue if we do it in reverse order. <br/>
-
 Checking if the player has died and displaying Game Over menu if true. <br/>
 Updating menu related stuff if we're in a menu. <br/>
 
@@ -179,3 +210,7 @@ In draw function, I just check what should be rendered, the game, the menu, or b
 I could be adding stuff to this game for the next month, but time flies and other projects need to be done. <br/>
 It was very interesting to me how me having to write all that, made me reconsider and change so many things in my code due to inconsistency, or just plainly not making sense, or being redundant. <br/>
 It was like rubberducking the whole source code, extremely insightful, the code stands on much more sturdy fundaments now, all of the changes made because of having to write all that will be in a PR called Rubberducking. Its quite a list. <br/>
+
+```
+
+```
