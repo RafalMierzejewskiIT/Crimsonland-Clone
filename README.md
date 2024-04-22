@@ -37,7 +37,7 @@ A menu was added midway through development, and it was a bigger trouble than I 
 I put some extra work into them so they highlight when mouseovered, with each button having its own sound channel just so you can swipe across them satisfyingly! <br/>
 Every button is an object with the same properties, I know I should make them a class already but the truth is that menu is a mess, and a decent implementation isn't worth pursuing for the scope of this game. <br/>
 What buttons are present are part of an array which is being rendered, for example the main menu is called "Start", and for "Start" <br/>
-Buttons = { StartGameButton, Options, ExitButton } <br/>
+`Buttons = { StartGameButton, Options, ExitButton }` <br/>
 Every part of menu has its own name and associated buttons. <br/>
 
 There's Start Game, Options and Exit buttons. <br/>
