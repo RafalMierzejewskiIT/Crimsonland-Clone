@@ -14,7 +14,7 @@ LMB = Shooting
 
 Escape = Pause/Unpause
 
-### About the project
+## About the project
 
 This is my project for CS50's Final Project.
 
@@ -43,7 +43,7 @@ There's Start Game, Options and Exit buttons.
 
 Inside Options you're able to change the volume with a slider made using simple-slider library created by [georgeprosser](https://www.love2d.org/forums/memberlist.php?mode=viewprofile&u=134865) from the [LÖVE2D Forums](https://www.love2d.org/forums/viewtopic.php?t=80711)
 
-### Explaining the code
+## Explaining the code
 
 Upon clicking Start Game the Player Character is generated in the center of the screen made by taking half of the width and height of your current monitors resolution.
 
@@ -55,7 +55,7 @@ When I need to remove something from memory or the screen I change this objects 
 
 When the user presses any key on the keyboard, it sends that input on every frame update which is usually 250 times a second. So when I wanted to make a pause if player pressed escape it just switched on and off like crazy. So, whenever I need to receive input only once, I add a check 'if not InputCheck to "if love.[].isDown", do something in that block of code in case user pressed button I want AND InputCheck is false, after that I change InputCheck to love.[keyboard or mouse].isDown, now for every keypress I only get the input once.
 
-#### Player
+### Player
 
 Player is able to move in 8 directions, after some time I realised that player moves faster diagonally, I solved this using pythagorean theorem, since a and b are 1, hypotenuse will be √2, so when dx and dy aren't 0, the movement speed of both axes is being multiplied by half of √2 which I round down to 0.7071, so now Player moves diagonally with a speed of √2/2 on both axes, normalising the vector to 1.
 Making this my first real use of pythagorean theorem in real life.
@@ -64,7 +64,7 @@ Around the player is a blue circle which indicates HP. It's an arc which takes v
 
 Player faces the cursor using the atan2 function which gives me relative angle between cursor and the player, the returned value is in radians, so I draw the player using this angle as its rotation parameter.
 
-#### Enemy
+### Enemy
 
 Somewhere around the edge of your screen an enemy is being spawned every 1 second.
 It's a pseudorandom choice:
@@ -82,18 +82,18 @@ self.x = self.x + self.speed \* cos \* dt
 self.y = self.y + self.speed \* sin \* dt
 Making this my first real use of trigonometry in real life.
 
-#### Weapons
+### Weapons
 
 Weapons are pretty straightforward, user selects their weapon by pressing 1 for pistol and 2 for smg, all of the weapons are being updated on every frame so you could get better accuracy if you switch your weapons dynamically. Everything has a sound, firing, reloading, finishing reloading.  
 If ammo_current > 0 player will successfully fire, else the weapon will be reloaded to ammo_max
 When weapon fires it creates an instance of a Bullet class, passing speed and damage to its constructor.
 
-#### Bullet
+### Bullet
 
 Every bullet faces the direction of the cursor using previously described trigonometry, due to their high velocity my collision detection sometimes bullets skip the enemy when they shouldn't. Taking the weapons current recoil status there's a pseudorandom diviation from the original angle.
 Bullets are being deleted if they go off the screen or they collide with an enemy.
 
-#### Bullet Trails
+### Bullet Trails
 
 On every bullet update an instance of BulletTrail class is being created, passing previous x, previous y, x, y, and trail_time.
 Using this information I draw a line between previous xy and current xy. trail_time is being used to calculate how long the trail should exist
@@ -136,12 +136,12 @@ Somewhat confusingly, BulletTrail is not a subclass of the Bullet class, this is
 
 I must say, the impact of adding bullet trails was quite astonishing. After being done right, the game at that point really started to feel like a real game.
 
-#### Cursor
+### Cursor
 
 Cursor is being rendered wherever the mouse pointer... points, it's a small circle that also shows the recoil! The recoil_current dictates the possible range of bullet angle deviation, but that is all relative to the distance, so using pythagorean theorem I calculate the distance, multiply it by recoil_current and I use this value as radius for the circle.
 It also shows the remaining ammo in currently selected weapon.
 
-#### Main
+### Main
 
 I aimed to keep the main function as slim as possible
 In update function, there are only a few things, Pause logic, checking collision and running update on all instances of all classes and check if they should be deleted by checking their delete property.
