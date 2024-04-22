@@ -66,11 +66,11 @@ So when I need to receive input only once, I add a check 'if not InputCheck to "
 ### Player
 
 Player is able to move in 8 directions, after some time I realised that player moves faster diagonally. <br/>
-I solved this using pythagorean theorem, since a and b are 1, hypotenuse will be \(\sqrt{2}\), so when dx and dy aren't 0, the movement speed of both axes is being multiplied by half of \(\sqrt{2}\) which I round down to 0.7071. <br/>
-Now Player moves diagonally with a speed of \( \frac{\sqrt{2}}{2} \) on both axes, normalising the vector to 1. <br/>
+I solved this using pythagorean theorem, since a and b are 1, hypotenuse will be $`\(\sqrt{2}\)`$, so when dx and dy aren't 0, the movement speed of both axes is being multiplied by half of $`\(\sqrt{2}\)`$ which I round down to 0.7071. <br/>
+Now Player moves diagonally with a speed of $`\( \frac{\sqrt{2}}{2} \)`$ on both axes, normalising the vector to 1. <br/>
 Making this my first real use of pythagorean theorem in real life. <br/>
 
-Around the player is a blue circle which indicates HP. It's an arc which takes values in radians so its calculated by dividing the current health by max health, taking that and multiplying by 2π, then subtracting \( \frac{\π}{2} \) to make it face the correct way which starts at right by default. <br/>
+Around the player is a blue circle which indicates HP. It's an arc which takes values in radians so its calculated by dividing the current health by max health, taking that and multiplying by 2π, then subtracting $`\( \frac{\π}{2} \)`$ to make it face the correct way which starts at right by default. <br/>
 
 Player faces the cursor using the atan2 function which gives me relative angle between cursor and the player, the returned value is in radians, so I draw the player using this angle as its rotation parameter. <br/>
 
@@ -90,8 +90,8 @@ It is being calculated by using atan2 function again for relative angle this tim
 Multiplying them in the movement formula: <br/>
 
 ```lua
-self.x = self.x + self.speed * cos * dt <br/>
-self.y = self.y + self.speed * sin * dt <br/>
+self.x = self.x + self.speed * cos * dt
+self.y = self.y + self.speed * sin * dt
 ```
 
 Making this my first real use of trigonometry in real life. <br/>
