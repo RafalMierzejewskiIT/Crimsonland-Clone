@@ -14,7 +14,7 @@ function Cursor:update()
     self.y = love.mouse.getY()
     if not Menu then
         local distance = GetDistance(self.x, self.y, PlayerCharacter.x, PlayerCharacter.y)
-        self.radius = SelectedWeapon.recoil_current * (distance / 100)
+        self.radius = (SelectedWeapon.recoil_current * (distance / 100)) - self.default_radius
         if self.radius < self.default_radius then
             self.radius = self.default_radius
         end

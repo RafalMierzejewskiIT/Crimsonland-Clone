@@ -11,6 +11,7 @@ function Enemy:new(x, y, hp, speed, damage, rate_of_fire, image)
     self.radius = self.image:getWidth() / 2
     self.damage = damage
     self.rate_of_fire = rate_of_fire
+
     self.rate_of_fire_timer = 0
     self.score = 5
     self.EtoP_distance = self.radius + PlayerCharacter.radius

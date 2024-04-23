@@ -43,7 +43,7 @@ function Weapons:load()
 end
 
 function Weapons:update(dt)
-    if SelectedWeapon.ammo_current == 0 then
+    if SelectedWeapon.ammo_current <= 0 then
         SelectedWeapon:reload(dt)
     end
     if SelectedWeapon.rate_of_fire_timer > 0 then
@@ -65,10 +65,10 @@ end
 function Weapons:fire()
     if SelectedWeapon.rate_of_fire_timer <= 0 and SelectedWeapon.ammo_current > 0 then
         local new_bullet = Bullet(SelectedWeapon.bullet_speed, SelectedWeapon.bullet_damage)
+        table.insert(Bullets, new_bullet)
         SelectedWeapon.rate_of_fire_timer = SelectedWeapon.rate_of_fire
         local source = SelectedWeapon.sound_fire:clone()
         love.audio.play(source)
-        table.insert(Bullets, new_bullet)
         SelectedWeapon.ammo_current = SelectedWeapon.ammo_current - 1
         SelectedWeapon.recoil_current = SelectedWeapon.recoil_current + SelectedWeapon.recoil_buildup
     end

@@ -8,7 +8,6 @@ function Player:new(x, y, hp, speed)
     self.height = self.image:getHeight()
     self.angle = math.atan2(GameCursor.y - self.y, GameCursor.x - self.x)
     self.radius = self.image:getWidth() / 2
-    Weapons:changeWeapon(1)
 end
 
 function Player:update(dt)
@@ -31,7 +30,7 @@ function Player:draw()
         self.current.hp = 0
     end
 
-    local hp_arc = -1.57 + ((self.current_hp / self.max_hp) * 6.29)
+    local hp_arc = ((self.current_hp / self.max_hp) * 6.29) - 1.57
     love.graphics.setColor(0, 0.8, 1, 0.5)
     love.graphics.circle("fill", self.x, self.y, self.radius * 2 + 5)
     love.graphics.setColor(0, 0.8, 1)
