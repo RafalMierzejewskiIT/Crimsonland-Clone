@@ -30,11 +30,13 @@ function Player:draw()
         self.current.hp = 0
     end
 
-    local hp_arc = ((self.current_hp / self.max_hp) * 6.29) - 1.57
+    local pi = 3.1415
+    local hp_arc = ((self.current_hp / self.max_hp) * (pi * 2)) - (pi / 2)
+
     love.graphics.setColor(0, 0.8, 1, 0.5)
     love.graphics.circle("fill", self.x, self.y, self.radius * 2 + 5)
     love.graphics.setColor(0, 0.8, 1)
-    love.graphics.arc("fill", self.x, self.y, self.radius * 2 + 5, -1.57, hp_arc)
+    love.graphics.arc("fill", self.x, self.y, self.radius * 2 + 5, -(pi / 2), hp_arc)
     love.graphics.setColor(0, 0, 0)
     love.graphics.circle("fill", self.x, self.y, self.radius * 2 - 1)
     love.graphics.setColor(1, 1, 1)

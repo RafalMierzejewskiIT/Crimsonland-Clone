@@ -10,9 +10,8 @@ function love.load()
     MainFont = love.graphics.newFont("static/fonts/Bebas-Regular.ttf", 64)
     love.graphics.setFont(MainFont)
 
+    Menu = "Start"
     Game_Loop = false
-    Menu = true
-    Score = 0
 
     Object = require "static.libs.classic"
     require "classes.Entity"
@@ -23,6 +22,7 @@ function love.load()
     require "classes.Cursor"
     require "static.menu"
 
+    Score = 0
     GameCursor = Cursor()
     Weapons:load()
 end

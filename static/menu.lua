@@ -3,7 +3,6 @@ require 'static.libs.simple-slider'
 local starting_height = 200
 local spacing = 50
 local menu_mouseover_sound = love.audio.newSource("static/sfx/menu_mouseover.wav", "static")
-Menu = "Start"
 
 StartGameButton = {}
 StartGameButton.text = "Start Game"
@@ -18,11 +17,11 @@ function StartGameButton:onClick()
 
     GameCursor = Cursor()
     Weapons:load()
+    PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 150)
+
     Enemies = {}
     Bullets = {}
     BulletTrails = {}
-
-    PlayerCharacter = Player(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 150)
 end
 
 Options = {}
