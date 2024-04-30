@@ -46,28 +46,28 @@ end
 
 function Enemy:spawnUpdate(dt)
     Enemy_spawn_counter = Enemy_spawn_counter + dt
-    if Enemy_spawn_counter >= 1 then
+    if Enemy_spawn_counter >= 0.8 then
         Enemy:spawn()
         Enemy_spawn_counter = 0
     end
 end
 
 function Enemy:spawn()
-    local enemyType = love.math.random(10)
+    local enemyType = love.math.random(20)
     local enemyHp = 0
     local enemySpeed = 0
     local enemyRadius = 0
     local enemyDamage = 0
     local enemyRateOfFire = 0
     local enemyImage = ""
-    if enemyType == 1 then
+    if enemyType <= 4 then
         enemyHp = 50
         enemySpeed = 200
         enemyRadius = 48
         enemyDamage = 10
         enemyRateOfFire = 0.5
         enemyImage = "static/images/E_small.png"
-    elseif enemyType == 10 then
+    elseif enemyType == 20 then
         enemyHp = 200
         enemySpeed = 50
         enemyRadius = 80

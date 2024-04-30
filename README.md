@@ -1,5 +1,7 @@
 ## Crimsonland Clone
 
+<video src='https://youtu.be/5QziQIVP4xs' width=360></video>
+
 This is a clone of the game Crimsonland made using LÖVE2D. <br/>
 
 The goal of this game is to achieve the highest score possible by eliminating monsters. <br/>
@@ -165,9 +167,9 @@ Player faces the cursor using the `atan2()` function which gives me relative ang
 
 Somewhere around the edge of your screen an enemy is being spawned every 1 second. <br/>
 It's a pseudorandom choice: <br/>
-10% for a smaller, faster, enemy with 50 health that deals 10 damage every 0.5s. <br/>
+20% for a smaller, faster, enemy with 50 health that deals 10 damage every 0.5s. <br/>
 80% for a medium enemy with 100 health that deals 20 damage every second. <br/>
-10% for a bigger, slower enemy with 200 health that deals 30 damage every 1.5s. <br/>
+5% for a bigger, slower enemy with 200 health that deals 30 damage every 1.5s. <br/>
 The bigger and slower the enemy is, the darker its color. <br/>
 
 For reference, Player Character speed is between medium and faster enemy, and has 100 health. <br/>
@@ -313,6 +315,7 @@ One problem that wasn't tackled in this project at all is resolution. How do 2D 
 ### Interesting insights from making this project
 
 This project further increased my already strong stance on the importance of planning before making, after you lay down some infrastructure, changing it is exponentially harder than just making it right in the first place. </br>
+
 It was very interesting to me how me having to write all that, made me reconsider and change so many things in my code due to inconsistency, or just plainly not making sense, or even being redundant. <br/>
 It was like rubberducking the whole source code, extremely insightful, the code stands on much more sturdy fundaments now, all of the changes made because of having to write all that will be in a PR called Rubberducking. <br/>
 All of the changes before 24.04 are also result of creating this readme. This is due to the fact that I added some stuff here, which made me question additional bits of the code. <br/>
