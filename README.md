@@ -1,6 +1,5 @@
 ## Crimsonland Clone
-
-<video src='https://youtu.be/5QziQIVP4xs' width=360></video>
+[![Video Demo](https://i.ytimg.com/vi_webp/5QziQIVP4xs/maxresdefault.webp)](https://youtu.be/5QziQIVP4xs)
 
 This is a clone of the game Crimsonland made using LÖVE2D. <br/>
 
@@ -8,17 +7,17 @@ The goal of this game is to achieve the highest score possible by eliminating mo
 
 ### Controls
 
-1 = Pistol
-2 = SMG
+1 = Pistol <br/>
+2 = SMG <br/>
 
-WSAD = Movement
-LMB = Shooting
+WASD = Movement <br/>
+LMB = Shooting <br/>
 
-Escape = Pause/Unpause
+Escape = Pause/Unpause <br/>
 
 ## About the project
 
-This is my project for CS50's Final Project. <br/>
+This is my final project for CS50. <br/>
 
 Following the instructions of Guy White from one of the seminars in CS50, at first I tried to reduce the game down to its Minimal Viable Product, I determined that for this game it would be <br/>
 Player character that moves in 8 direction <br/>
@@ -168,7 +167,7 @@ Player faces the cursor using the `atan2()` function which gives me relative ang
 Somewhere around the edge of your screen an enemy is being spawned every 1 second. <br/>
 It's a pseudorandom choice: <br/>
 20% for a smaller, faster, enemy with 50 health that deals 10 damage every 0.5s. <br/>
-80% for a medium enemy with 100 health that deals 20 damage every second. <br/>
+75% for a medium enemy with 100 health that deals 20 damage every second. <br/>
 5% for a bigger, slower enemy with 200 health that deals 30 damage every 1.5s. <br/>
 The bigger and slower the enemy is, the darker its color. <br/>
 
