@@ -1,6 +1,6 @@
 ## Crimsonland Clone
 
-[![Video Demo](https://i.ytimg.com/vi_webp/7QiWT7ZvzEI/maxresdefault.webp)](https://www.youtube.com/watch?v=7QiWT7ZvzEI)
+[![Video Demo](thumbnail.png)](https://www.youtube.com/watch?v=7QiWT7ZvzEI)
 
 This is a clone of the game Crimsonland made using LÖVE2D. <br/>
 
